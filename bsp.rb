@@ -27,26 +27,27 @@ class Node
     @children = []
   end
 
+  def inspect
+    "<Node #{origin.x}, #{origin.y}, #{width}, #{height}>"
+  end
+
   def split
-    @children = []
+    self.children = []
     direction = rand(2)
 
     if direction == 0 # split horizontally
       splitWidth = width
       splitHeight = height / 2
 
-      @children << Node.new(origin, splitWidth, splitHeight)
-      @children << Node.new(Point.new(origin.x, splitHeight), width, height - splitHeight)
+      self.children << Node.new(origin, splitWidth, splitHeight)
+      self.children << Node.new(Point.new(origin.x, origin.y + splitHeight), width, height - splitHeight)
     else # split vertically
       splitWidth = width / 2
       splitHeight = height
 
-      @children << Node.new(origin, splitWidth, splitHeight)
-      @children << Node.new(Point.new(splitWidth, origin.y), width - splitWidth, height)
+      self.children << Node.new(origin, splitWidth, splitHeight)
+      self.children << Node.new(Point.new(origin.x + splitWidth, origin.y), width - splitWidth, height)
     end
-
-    p @children.inspect
-    p "------"
 
     self
   end

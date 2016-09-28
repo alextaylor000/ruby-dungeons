@@ -1,12 +1,12 @@
 require 'rasem'
 require 'logger'
-require './bsp'
+require './lib/node'
 
 logger = Logger.new(STDOUT)
 logger.level = Logger::INFO
 
 
-50.times do |d|
+5.times do |d|
   node_tree = Node.new().split
   logger.debug("Original node children: #{node_tree.children}")
 

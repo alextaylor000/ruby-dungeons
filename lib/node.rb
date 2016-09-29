@@ -4,13 +4,19 @@ class Node
   attr_accessor :origin # top left
   attr_accessor :width, :height
   attr_reader   :seed
+  attr_reader   :preset_divisor
   attr_accessor :children
 
-  def initialize(origin: nil, width: 750, height: 750, seed: Random.new_seed)
+  def initialize(origin: nil,
+                 width: 750,
+                 height: 750,
+                 seed: Random.new_seed,
+                 divisor: nil)
     @origin = origin || Point.new(0, 0)
     @width = width
     @height = height
     @seed = seed
+    @preset_divisor = divisor
     @children = []
 
     set_prng_seed
@@ -44,20 +50,24 @@ class Node
     rand(max) == 1
   end
 
+  def divisor
+    preset_divisor || random_divisor
+  end
+
   def random_divisor
     [2, 3, 4, 5].sample
   end
 
   def split_horizontally
     splitWidth = width
-    splitHeight = height / random_divisor
+    splitHeight = height / divisor
 
     self.children[0] = Node.new(origin: origin, width: splitWidth, height: splitHeight)
     self.children[1] = Node.new(origin: Point.new(origin.x, origin.y + splitHeight), width: width, height: height - splitHeight)
   end
 
   def split_vertically
-    splitWidth = width / random_divisor
+    splitWidth = width / divisor
     splitHeight = height
 
     self.children[0] = Node.new(origin: origin, width: splitWidth, height: splitHeight)

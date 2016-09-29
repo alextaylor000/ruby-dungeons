@@ -62,16 +62,27 @@ class Node
     splitWidth = width
     splitHeight = height / divisor
 
-    self.children[0] = Node.new(origin: origin, width: splitWidth, height: splitHeight)
-    self.children[1] = Node.new(origin: Point.new(origin.x, origin.y + splitHeight), width: width, height: height - splitHeight)
+    self.children[0] = new_child_node(origin: origin, width: splitWidth, height: splitHeight)
+    self.children[1] = new_child_node(origin: Point.new(origin.x, origin.y + splitHeight), width: width, height: height - splitHeight)
   end
 
   def split_vertically
     splitWidth = width / divisor
     splitHeight = height
 
-    self.children[0] = Node.new(origin: origin, width: splitWidth, height: splitHeight)
-    self.children[1] =  Node.new(origin: Point.new(origin.x + splitWidth, origin.y), width: width - splitWidth, height: height)
+    self.children[0] = new_child_node(origin: origin, width: splitWidth, height: splitHeight)
+    self.children[1] =  new_child_node(origin: Point.new(origin.x + splitWidth, origin.y), width: width - splitWidth, height: height)
+  end
+
+  # creates a new child node, passing any attributes that should
+  # inherit from the parent (i.e. divisor)
+  def new_child_node(origin:, width:, height:)
+    Node.new({
+      origin: origin,
+      width: width,
+      height: height,
+      divisor: preset_divisor
+    })
   end
 
 end

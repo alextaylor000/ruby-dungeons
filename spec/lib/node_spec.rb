@@ -20,10 +20,19 @@ describe Node do
     end
   end
 
-  context 'with a custom divisor' do
+  context 'with a preset divisor' do
     it 'always generates the correct splits' do
       node = Node.new(width: 100, height: 100, divisor: 2).split
       expect(node.children.all?{ |c| c.width == 50 || c.width == 100 }).to be true
     end
+  end
+
+  context 'with child nodes' do
+    xit 'still behaves deterministically' do
+      # right now, we reset the seed every time a node is initialized.
+      # we shouldn't do that...
+    end
+
+    it 'should inherit a preset divisor from its parent'
   end
 end

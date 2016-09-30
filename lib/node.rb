@@ -10,7 +10,7 @@ class Node
   def initialize(origin: nil,
                  width: 750,
                  height: 750,
-                 seed: Random.new_seed,
+                 seed: Random::DEFAULT.seed,
                  divisor: nil)
     @origin = origin || Point.new(0, 0)
     @width = width
@@ -18,8 +18,6 @@ class Node
     @seed = seed
     @preset_divisor = divisor
     @children = []
-
-    set_prng_seed
   end
 
   def inspect(test_env = false)
@@ -39,23 +37,20 @@ class Node
   end
 
   private
-
-  # After setting the seed with `srand`, all subsequent calls to `rand`, `sample`, etc.
-  # will behave deterministically.
-  def set_prng_seed
-    srand(seed)
+  def prng
+    @prng ||= Random.new(seed)
   end
 
   def random_boolean(max = 2)
-    rand(max) == 1
+    prng.rand(max) == 1
   end
 
   def divisor
     preset_divisor || random_divisor
   end
 
-  def random_divisor
-    [2, 3, 4, 5].sample
+  def random_divisor # between 2 and 5
+    prng.rand(4) + 2
   end
 
   def split_horizontally
